@@ -14645,7 +14645,7 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('index', __webpack_require__(/*! ./posts/index.vue */ "./resources/js/posts/index.vue")["default"]);
+Vue.component('post-index', __webpack_require__(/*! ./posts/index.vue */ "./resources/js/posts/index.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
