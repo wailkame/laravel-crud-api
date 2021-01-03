@@ -9,24 +9,13 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Something</td>
-                <td>Longer text</td>
-                <td>2021-1-02</td>
+            <tr v-for="post in posts" :key="post.id">
+                <td>{{post.title}}</td>
+                <td>{{post.post_text}}</td>
+                <td>{{post.created_at}}</td>
                 <td></td>
             </tr>
-            <tr>
-                <td>Something</td>
-                <td>Longer text</td>
-                <td>2021-1-03</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Something</td>
-                <td>Longer text</td>
-                <td>2021-10-02</td>
-                <td></td>
-            </tr>
+            
         </tbody>
     </table>
 </template>
@@ -35,7 +24,15 @@
 <script>
 export default {
     data(){
-
+        return {
+            posts: [],
+        }
+            
+        
+    },
+    mounted(){
+        axios.get('http://crudapp.test/api/posts')
+        .then(response => this.posts = response.data.data);
     }
 }
 </script>
