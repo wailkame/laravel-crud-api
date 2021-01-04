@@ -1,7 +1,7 @@
 <template>
     <div>
         <select v-model="category_id"  class="form-control col-md-3 my-2">
-            <option disabled value="" >-- choose category --</option>
+            <option value="" >-- choose category --</option>
             <option  v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
         </select>
         <table class="table">
