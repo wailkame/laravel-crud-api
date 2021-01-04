@@ -18,9 +18,11 @@ class PostResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'category_id' => $this->category_id,
             'title' => $this->title,
             'post_text' => Str::limit($this->post_text, 50),
             'created_at' => $this->created_at->toDateString(),
+            
         ];
     }
 }
