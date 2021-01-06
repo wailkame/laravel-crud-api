@@ -6,8 +6,11 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
+
+Vue.use(VueRouter);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -19,7 +22,24 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('post-index', require('./posts/index.vue').default);
+import App from './posts/App.vue';
+import PostIndex from './posts/Index.vue';
+import PostCreate from './posts/PostCreate.vue';
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        {
+            path:'/',
+            component: PostIndex
+        },
+        {
+            path: '/posts/create',
+            component: PostCreate
+        }
+    ]
+})
+
 Vue.component('pagination', require('laravel-vue-pagination'));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,5 +49,7 @@ Vue.component('pagination', require('laravel-vue-pagination'));
 
 const app = new Vue({
     el: '#app',
+    components:{App},
+    router
     
 });
