@@ -7,11 +7,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <router-link to="/" class="nav-link">Posts list</router-link>
+                <li class="nav-item">
+                    <router-link to="/" class="nav-link" exact>Posts list</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/posts/create" class="nav-link" >Add New Post</router-link>
+                    <router-link to="/posts/create" class="nav-link" exact>Add New Post</router-link>
                 </li>
             </ul>
         </div>
