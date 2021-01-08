@@ -23,23 +23,13 @@ Vue.use(VueRouter);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 import App from './posts/App.vue';
-import PostIndex from './posts/Index.vue';
-import PostCreate from './posts/PostCreate.vue';
+// import PostIndex from './posts/Index.vue';
+// import PostCreate from './posts/PostCreate.vue';
+import routes from './routes';
 
 const router = new VueRouter({
     mode: 'history',
-    routes: [
-        {
-            path:'/',
-            component: PostIndex,
-            name: 'posts.index'
-        },
-        {
-            path: '/posts/create',
-            component: PostCreate,
-            name: 'posts.create'
-        }
-    ],
+    routes,
     linkActiveClass: 'active'
 })
 
