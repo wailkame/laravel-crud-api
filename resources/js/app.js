@@ -6,32 +6,8 @@
 
 require('./bootstrap');
 
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-
-
-Vue.use(VueRouter);
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-
 import App from './posts/App.vue';
-// import PostIndex from './posts/Index.vue';
-// import PostCreate from './posts/PostCreate.vue';
-import routes from './routes';
-
-const router = new VueRouter({
-    mode: 'history',
-    routes,
-    linkActiveClass: 'active'
-})
+import router from './routes';
 
 Vue.component('pagination', require('laravel-vue-pagination'));
 /**

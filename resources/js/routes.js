@@ -1,8 +1,9 @@
+import VueRouter from 'vue-router';
 import PostIndex from './posts/Index.vue';
 import PostCreate from './posts/PostCreate.vue';
 
 
-const routes =  [
+let routes =  [
     {
         path:'/',
         component: PostIndex,
@@ -15,4 +16,8 @@ const routes =  [
     }
 ]
 
-export default router;
+export default new VueRouter({
+    routes,
+    linkActiveClass: 'is-active',
+    mode: 'history'
+});
