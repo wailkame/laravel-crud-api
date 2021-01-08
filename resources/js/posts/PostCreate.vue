@@ -26,8 +26,12 @@ export default {
     data(){
         return {
             categories: [],
-            
+
         }
+    },
+    mounted:{
+        axios.get('http://crudapp.test/api/categories')
+            
     }
 }
 </script>
