@@ -31,11 +31,13 @@ const router = new VueRouter({
     routes: [
         {
             path:'/',
-            component: PostIndex
+            component: PostIndex,
+            name: 'posts.index'
         },
         {
             path: '/posts/create',
-            component: PostCreate
+            component: PostCreate,
+            name: 'posts.create'
         }
     ],
     linkActiveClass: 'active'

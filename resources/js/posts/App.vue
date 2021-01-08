@@ -8,10 +8,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <router-link to="/" class="nav-link" exact>Posts list</router-link>
+                    <router-link :to="{name: 'posts.index'}" class="nav-link" exact>Posts list</router-link>
                 </li>
                 <li class="nav-item">
-                    <router-link to="/posts/create" class="nav-link" exact>Add New Post</router-link>
+                    <router-link :to="{name: 'posts.create'}" class="nav-link" exact>Add New Post</router-link>
                 </li>
             </ul>
         </div>
