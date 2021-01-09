@@ -15,11 +15,12 @@
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 window.Vue = Vue;
 
 Vue.use(VueRouter);
-
+Vue.use(VueSweetalert2);
 
 
 window.axios = require('axios');

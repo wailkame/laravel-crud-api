@@ -64,11 +64,13 @@ export default {
             
             axios.post('http://crudapp.test/api/posts', field)
             .then(response => {
+                this.$swal('Post Added Successfully');
                 this.$router.push('/');
                 this.form_submitted = false;
             })
             .catch(error => {
                 if(error.response.status === 422){
+                    this.$swal({icon:'error', title:'Error Happened'});
                     this.errors = error.response.data.errors;
                     this.form_submitted = false;
                 }
