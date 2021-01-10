@@ -39,4 +39,9 @@ class PostsController extends Controller
         $post = Post::create($request->validated());
         return new PostResource($post);
     }
+
+    public function show(Post $post){
+
+        return new PostResource($post);
+    }
 }
