@@ -31,7 +31,8 @@
                     <td>{{post.post_text}}</td>
                     <td>{{post.created_at}}</td>
                     <td>
-                        <router-link :to="{name:'posts.edit' , params: {id: post.id} }">Edit</router-link>
+                        <router-link class="btn btn-info btn-sm" :to="{name:'posts.edit' , params: {id: post.id} }">Edit</router-link>
+                        <button @click="delete_post(post.id)" class="btn btn-danger btn-sm">Delete</button>
                     </td>
                 </tr>
                 
@@ -88,7 +89,20 @@ export default {
                     this.posts = response.data;
                     
 				});
-		}
+        },
+        delete_post(post_id){
+
+            axios.delete('http://crudapp.test/api/posts/'+post_id)
+            .then(response => {
+                this.$swal('Post Deleted Successfully');
+                this.getResults();
+            })
+            .catch(error => {
+                if(error.response.status === 422){
+                    this.$swal({icon:'error', title:'Error Happened'});
+                }
+            });
+        }
 	}
 }
 </script>
