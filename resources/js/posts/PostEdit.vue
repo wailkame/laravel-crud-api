@@ -17,8 +17,6 @@
             </select>
             <div class="alert alert-danger" v-if="errors.category_id">{{errors.category_id[0]}}</div>
             <br>            
-            <input type="file" @change="select_file">
-            <br><br>
             <input type="submit" class="btn btn-primary" :value="form_submitted ? 'Saving post...': 'Save post'" :disabled="form_submitted"> 
             <br>
             
@@ -37,7 +35,7 @@ export default {
                 title: '',
                 post_text: '',
                 category_id: '',
-                thumbnail: null,
+                
             },
             errors: {},
             form_submitted:false
@@ -51,26 +49,17 @@ export default {
 
         // get the actual post
         axios.get('http://crudapp.test/api/posts/'+ this.$route.params.id)
-        .then(response => this.categories = response.data.data);
-        console.log(this.$route);
+        .then(response => this.field = response.data.data);
+        
 
     },
     methods:{
-        select_file(event){
-            this.field.thumbnail = event.target.files[0];
-            console.log(event.target.files);
-        },
         submit_form(){
             this.form_submitted = true;
             
-            let field = new FormData();
-            for(let key in this.field){
-                field.append(key, this.field[key]);
-            }
-            
-            axios.post('http://crudapp.test/api/posts', field)
+            axios.put('http://crudapp.test/api/posts/'+this.$route.params.id, this.field)
             .then(response => {
-                this.$swal('Post Added Successfully');
+                this.$swal('Post Updated Successfully');
                 this.$router.push('/');
                 this.form_submitted = false;
             })
@@ -78,8 +67,8 @@ export default {
                 if(error.response.status === 422){
                     this.$swal({icon:'error', title:'Error Happened'});
                     this.errors = error.response.data.errors;
-                    this.form_submitted = false;
                 }
+                this.form_submitted = false;
             });
         }
     }

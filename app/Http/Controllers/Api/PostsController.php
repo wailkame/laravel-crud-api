@@ -41,7 +41,14 @@ class PostsController extends Controller
     }
 
     public function show(Post $post){
+       
+        return new PostResource($post);
 
+    }
+
+    public function update(Post $post , StorePostRequest $request){
+
+        $post->update($request->validated());
         return new PostResource($post);
     }
 }
