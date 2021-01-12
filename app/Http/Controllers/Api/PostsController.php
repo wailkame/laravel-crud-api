@@ -23,8 +23,22 @@ class PostsController extends Controller
         if(!in_array($sortDirection, ['asc', 'desc'])){
             $sortDirection = 'desc';
         }
-        $posts = Post::when(request('category_id' , '') != '', function($query){
-            $query->where('category_id' , request('category_id'));
+        $filled = array_filter(request()->only([
+            'title', 'post_text', 'created_at'
+        ]));
+
+        $posts = Post::when(count($filled) > 0 , function($query) use ($filled){
+            foreach($filled as $column => $value){
+                $query->where($column, 'LIKE', '%' . $value . '%');
+            }
+        })->when(request('search', '') != '', function($query){
+            $query->where(function($q){
+                $q->where('title', 'LIKE', '%' . request('search') . '%')
+                ->orWhere('post_text', '%' . request('search') . '%')
+                ->orWhere('created_at', '%' . request('search') . '%');
+            });
+        })->when(request('category_id', '') != '', function($query){
+            $query->where('category_id', request('category_id'));
         })->orderBy($sortField, $sortDirection)->paginate(3);
         return PostResource::collection($posts);
     }

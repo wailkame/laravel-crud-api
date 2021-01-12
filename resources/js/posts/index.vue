@@ -1,28 +1,40 @@
 <template>
-    <div>
-        <select v-model="category_id"  class="form-control col-md-3 my-2">
+    <div class="row justify-content-between pb-4">
+        <select v-model="params.category_id"  class="form-control col-md-3 my-2">
             <option value="" >-- choose category --</option>
             <option  v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
         </select>
+        <input type="text" class="form-control col-md-3" placeholder="Search(min 4 letter)" v-model="search">
         <table class="table">
             <thead>
                 <tr>
                     <th>
                         <a href="#" @click.prevent="changeSort('title')">Title</a>
-                        <span v-if="sort_field === 'title' && sort_direction === 'asc'">&uarr;</span>
-                        <span v-if="sort_field === 'title' && sort_direction === 'desc'">&darr;</span>
+                        <span v-if="this.params.sort_field === 'title' && this.params.sort_direction === 'asc'">&uarr;</span>
+                        <span v-if="this.params.sort_field === 'title' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
                     <th>
                         <a href="#" @click.prevent="changeSort('post_text')">Post Text</a>
-                        <span v-if="sort_field === 'post_text' && sort_direction === 'asc'">&uarr;</span>
-                        <span v-if="sort_field === 'post_text' && sort_direction === 'desc'">&darr;</span>
+                        <span v-if="this.params.sort_field === 'post_text' && this.params.sort_direction === 'asc'">&uarr;</span>
+                        <span v-if="this.params.sort_field === 'post_text' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
                     <th>
                         <a href="#" @click.prevent="changeSort('created_at')">Created At</a>
-                        <span v-if="sort_field === 'created_at' && sort_direction === 'asc'">&uarr;</span>
-                        <span v-if="sort_field === 'created_at' && sort_direction === 'desc'">&darr;</span>
+                        <span v-if="this.params.sort_field === 'created_at' && this.params.sort_direction === 'asc'">&uarr;</span>
+                        <span v-if="this.params.sort_field === 'created_at' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
                     <th>Actions</th>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="text" class="form-input w-100" v-model="params.title">
+                    </th>
+                    <th>
+                        <input type="text" class="form-input w-100" v-model="params.post_text">
+                    </th>
+                    <th>
+                        <input type="text" class="form-input w-100" v-model="params.created_at">
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -50,9 +62,15 @@ export default {
         return {
             posts: {},
             categories: [],
-            category_id: '',
-            sort_field: 'created_at',
-            sort_direction: 'desc',
+            params:{
+                category_id: '',
+                sort_field: 'created_at',
+                sort_direction: 'desc',
+                title: '',
+                post_text: '',
+                created_at: ''
+            },
+            search: ''
         } 
     },
     mounted(){
@@ -63,11 +81,18 @@ export default {
         
     },
     watch:{
-        category_id(value){
-            this.getResults();
+        params:{
+            handler(){
+                this.getResults();
+            },
+            deep: true
+        },
+        search(val, old){
+            if(val.length >= 4 || old.length >= 4){
+                this.getResults(); 
+            }
         }
-    }
-    ,
+    },
     methods: {
         // Our method change data sorting
         changeSort(field){
@@ -81,25 +106,39 @@ export default {
         },
 		// Our method to GET results from a Laravel endpoint
 		getResults(page = 1) {
-            axios.get('http://crudapp.test/api/posts?page=' + page 
-                + '&category_id='+this.category_id
-                + '&sort_field='+ this.sort_field
-                + '&sort_direction='+ this.sort_direction)
-				.then(response => {
-                    this.posts = response.data;
-                    
-				});
+            axios.get('http://crudapp.test/api/posts?page=' , {
+                params:{
+                    page,
+                    search:this.search.length >= 4 ? this.search: '',
+                    ...this.params
+                }
+            })
+            .then(response => {
+                this.posts = response.data;
+                
+            });
         },
         delete_post(post_id){
-
-            axios.delete('http://crudapp.test/api/posts/'+post_id)
-            .then(response => {
-                this.$swal('Post Deleted Successfully');
-                this.getResults();
-            })
-            .catch(error => {
-                if(error.response.status === 422){
-                    this.$swal({icon:'error', title:'Error Happened'});
+            this.$swal({
+                title:'Are you sure ?',
+                text: "you won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtomColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    axios.delete('http://crudapp.test/api/posts/'+post_id)
+                    .then(response => {
+                        this.$swal('Post Deleted Successfully');
+                        this.getResults();
+                    })
+                    .catch(error => {
+                        if(error.response.status === 422 || error.response.status === 404){
+                            this.$swal({icon:'error', title:'Error Happened'});
+                        }
+                    });
                 }
             });
         }
