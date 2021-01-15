@@ -7,7 +7,7 @@
 require('./bootstrap');
 import App from './posts/App.vue';
 import router from './routes';
-window.Vue = require('vue');
+
 
 /**
  * The following block of code may be used to automatically register your

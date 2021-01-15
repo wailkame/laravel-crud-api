@@ -28,6 +28,7 @@ Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
 window.axios = require('axios');
 
+axios.defaults.withCredentials = true;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**
