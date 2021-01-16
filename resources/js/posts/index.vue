@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-content-between pb-4">
+    <div class="row justify-content-between pb-4" v-if="isLogin">
         <select v-model="params.category_id"  class="form-control col-md-3 my-2">
             <option value="" >-- choose category --</option>
             <option  v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
@@ -70,13 +70,22 @@ export default {
                 post_text: '',
                 created_at: ''
             },
-            search: ''
+            search: '',
+            isLogin: false
         } 
     },
     mounted(){
 
-        axios.get('http://crudapp.test/api/categories')
-        .then(response => this.categories = response.data.data);
+        axios.get('/api/categories')
+        .then(response => {
+            this.categories = response.data.data;
+             this.isLogin = true;
+        })
+        .catch(error => {
+            if(error.response.status === 500 || error.response.status === 401){
+                this.$router.push('/');
+            }
+        });
         this.getResults();
         
     },
@@ -106,7 +115,7 @@ export default {
         },
 		// Our method to GET results from a Laravel endpoint
 		getResults(page = 1) {
-            axios.get('http://crudapp.test/api/posts?page=' , {
+            axios.get('/api/posts?page=' , {
                 params:{
                     page,
                     search:this.search.length >= 4 ? this.search: '',
@@ -129,7 +138,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result)=>{
                 if(result.isConfirmed){
-                    axios.delete('http://crudapp.test/api/posts/'+post_id)
+                    axios.delete('/api/posts/'+post_id)
                     .then(response => {
                         this.$swal('Post Deleted Successfully');
                         this.getResults();

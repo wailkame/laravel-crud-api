@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Middleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::apiResource('posts' , 'Api\PostsController');
-Route::get('categories', 'Api\CategoryController@index');
+Route::group(['middleware' => 'auth:sanctum'], function(){
+    Route::apiResource('posts' , 'Api\PostsController');
+    Route::get('categories', 'Api\CategoryController@index');
+});

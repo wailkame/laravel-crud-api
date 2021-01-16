@@ -1,6 +1,6 @@
 <template>
     <div>
-       <form @submit.prevent="submit_form">
+       <form @submit.prevent="submit_form" v-if="isLogin">
            Post Title:
            <br >
            <input type="text" class="form-control" v-model="field.title">
@@ -40,14 +40,22 @@ export default {
                 thumbnail: null,
             },
             errors: {},
-            form_submitted:false
+            form_submitted:false,
+            isLogin: false
 
         }
     },
-    mounted(){
-        axios.get('http://crudapp.test/api/categories')
-        .then(response => this.categories = response.data.data);
-
+    created(){
+        axios.get('/api/categories')
+        .then(response => {
+            this.categories = response.data.data;
+            this.isLogin = true;
+        })
+        .catch(error => {
+            if(error.response.status === 500 || error.response.status === 401){
+                this.$router.push('/');
+            }
+        });
     },
     methods:{
         select_file(event){
@@ -62,10 +70,10 @@ export default {
                 field.append(key, this.field[key]);
             }
             
-            axios.post('http://crudapp.test/api/posts', field)
+            axios.post('/api/posts', field)
             .then(response => {
                 this.$swal('Post Added Successfully');
-                this.$router.push('/');
+                this.$router.push('/index');
                 this.form_submitted = false;
             })
             .catch(error => {

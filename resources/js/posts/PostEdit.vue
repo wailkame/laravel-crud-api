@@ -44,11 +44,11 @@ export default {
     },
     mounted(){
         // get all categories 
-        axios.get('http://crudapp.test/api/categories')
+        axios.get('/api/categories')
         .then(response => this.categories = response.data.data);
 
         // get the actual post
-        axios.get('http://crudapp.test/api/posts/'+ this.$route.params.id)
+        axios.get('/api/posts/'+ this.$route.params.id)
         .then(response => this.field = response.data.data);
         
 
@@ -57,10 +57,10 @@ export default {
         submit_form(){
             this.form_submitted = true;
             
-            axios.put('http://crudapp.test/api/posts/'+this.$route.params.id, this.field)
+            axios.put('/api/posts/'+this.$route.params.id, this.field)
             .then(response => {
                 this.$swal('Post Updated Successfully');
-                this.$router.push('/');
+                this.$router.push('/index');
                 this.form_submitted = false;
             })
             .catch(error => {

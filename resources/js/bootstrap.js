@@ -21,14 +21,17 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueSweetalert2 from 'vue-sweetalert2';
-
+import Cookies from 'js-cookie';
 window.Vue = Vue;
 
 Vue.use(VueRouter);
 Vue.use(VueSweetalert2);
-window.axios = require('axios');
 
-axios.defaults.withCredentials = true;
+window.Cookies = Cookies;
+
+window.axios = require('axios');
+window.axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://crudapp.test';
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 /**

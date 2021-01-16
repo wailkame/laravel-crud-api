@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html >
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,12 +12,11 @@
         
     </head>
     <body>
-        <div class="container">
-            <div id="app">
-                <post-index></post-index>
-           </div>
+        <div id="app">
+            <!-- here is where the rendered vue js code sleep -->
+            
         </div>
        
     </body>
-    <script src="{{asset('js/app.js')}}"></script>
+    <script src="/js/app.js"></script>
 </html>

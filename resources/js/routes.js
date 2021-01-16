@@ -2,10 +2,15 @@ import VueRouter from 'vue-router';
 import PostIndex from './posts/Index.vue';
 import PostCreate from './posts/PostCreate.vue';
 import PostEdit from './posts/PostEdit.vue';
-
+import PostLogin from './posts/Login.vue';
 let routes =  [
     {
         path:'/',
+        component:PostLogin,
+        name:'posts.login'
+    },  
+    {
+        path:'/index',
         component: PostIndex,
         name: 'posts.index'
     },
