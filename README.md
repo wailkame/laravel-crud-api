@@ -30,6 +30,8 @@
 #### Development
 - you must set you local domain as crudapp.test
 - if you want you use your own local domain you must change the local variable axios.defaults.baseURL = your domain in bootstrap.js
+- to login you can use the auto generated tables (check user table ) the default password is "password"
+
 ```bash
 
 # Build and watch
