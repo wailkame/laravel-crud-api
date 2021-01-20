@@ -3,26 +3,31 @@ import PostIndex from './posts/Index.vue';
 import PostCreate from './posts/PostCreate.vue';
 import PostEdit from './posts/PostEdit.vue';
 import PostLogin from './posts/Login.vue';
+
 let routes =  [
     {
         path:'/',
         component:PostLogin,
-        name:'posts.login'
+        name:'posts.login',
+        meta: { requiresVisitor: true }
     },  
     {
         path:'/index',
         component: PostIndex,
-        name: 'posts.index'
+        name: 'posts.index',
+        meta: { requiresAuth: true }
     },
     {
         path: '/posts/create',
         component: PostCreate,
-        name: 'posts.create'
+        name: 'posts.create',
+        meta: { requiresAuth: true }
     },
     {
         path: '/edit/:id',
         component: PostEdit,
-        name: 'posts.edit'
+        name: 'posts.edit',
+        meta: { requiresAuth: true }
     }
 ]
 

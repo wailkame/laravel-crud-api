@@ -27,7 +27,36 @@ Vue.component('pagination', require('laravel-vue-pagination'));
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+function isLoggedIn(){
+    return localStorage.getItem('isLoggedIn');
+}
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.requiresAuth)) {
+      // this route requires auth, check if logged in
+      // if not, redirect to login page.
+      if (!isLoggedIn()) {
+        next({
+          name:'posts.login'
+          
+        })
+      } else {
+        next()
+      }
+    }else if (to.matched.some(record => record.meta.requiresVisitor)) {
+        // this route requires auth, check if logged in
+        // if not, redirect to login page.
+        if (isLoggedIn()) {
+          next({
+            name:'posts.index'
+            
+          })
+        } else {
+          next()
+        }
+      } else {
+      next({name:'posts.login'}) // make sure to always call next()!
+    }
+  })
 const app = new Vue({
     render: h => h(App),
     router,

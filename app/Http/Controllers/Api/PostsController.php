@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -39,6 +40,8 @@ class PostsController extends Controller
             });
         })->when(request('category_id', '') != '', function($query){
             $query->where('category_id', request('category_id'));
+        })->when(request('user_id', '') != '', function($query){
+            $query->where('user_id', request('user_id'));
         })->orderBy($sortField, $sortDirection)->paginate(3);
         return PostResource::collection($posts);
     }
@@ -61,13 +64,23 @@ class PostsController extends Controller
     }
 
     public function update(Post $post , StorePostRequest $request){
-
-        $post->update($request->validated());
-        return new PostResource($post);
+        if(Auth::user()->id === $post->user_id){
+            $post->update($request->validated());
+            return new PostResource($post);
+        }else{
+           return "something went wrong";
+        }
+        
     }
 
     public function destroy(Post $post){
-        $post->delete();
-        return response()->noContent();
+        //dd($post);
+        if(Auth::user()->id === $post->user_id){
+            $post->delete();
+            return response()->noContent();
+        }else{
+           return "something went wrong";
+        }
+        
     }
 }

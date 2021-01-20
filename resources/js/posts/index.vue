@@ -9,17 +9,17 @@
             <thead>
                 <tr>
                     <th>
-                        <a href="#" @click.prevent="changeSort('title')">Title</a>
+                        <a  @click.prevent="changeSort('title')">Title</a>
                         <span v-if="this.params.sort_field === 'title' && this.params.sort_direction === 'asc'">&uarr;</span>
                         <span v-if="this.params.sort_field === 'title' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
                     <th>
-                        <a href="#" @click.prevent="changeSort('post_text')">Post Text</a>
+                        <a  @click.prevent="changeSort('post_text')">Post Text</a>
                         <span v-if="this.params.sort_field === 'post_text' && this.params.sort_direction === 'asc'">&uarr;</span>
                         <span v-if="this.params.sort_field === 'post_text' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
                     <th>
-                        <a href="#" @click.prevent="changeSort('created_at')">Created At</a>
+                        <a  @click.prevent="changeSort('created_at')">Created At</a>
                         <span v-if="this.params.sort_field === 'created_at' && this.params.sort_direction === 'asc'">&uarr;</span>
                         <span v-if="this.params.sort_field === 'created_at' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
@@ -63,6 +63,7 @@ export default {
             posts: {},
             categories: [],
             params:{
+                user_id:'',
                 category_id: '',
                 sort_field: 'created_at',
                 sort_direction: 'desc',
@@ -75,11 +76,16 @@ export default {
         } 
     },
     mounted(){
-
+        // get user Data 
+        axios.get('/api/user').then(response => {
+            this.params.user_id = response.data.id;
+            
+        });
+        // get all gategories
         axios.get('/api/categories')
         .then(response => {
             this.categories = response.data.data;
-             this.isLogin = true;
+            this.isLogin = true;
         })
         .catch(error => {
             if(error.response.status === 500 || error.response.status === 401){
@@ -103,6 +109,7 @@ export default {
         }
     },
     methods: {
+        
         // Our method change data sorting
         changeSort(field){
             if(this.sort_field === field){

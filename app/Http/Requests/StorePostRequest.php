@@ -26,7 +26,8 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required',
             'post_text' => 'required',
-            'category_id' => 'required'
+            'category_id' => 'required',
+            
         ];
     }
 }

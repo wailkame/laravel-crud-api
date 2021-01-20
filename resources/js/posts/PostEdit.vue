@@ -35,6 +35,7 @@ export default {
                 title: '',
                 post_text: '',
                 category_id: '',
+                user_id:'',
                 
             },
             errors: {},
@@ -43,6 +44,10 @@ export default {
         }
     },
     mounted(){
+        // get all user Data
+        axios.get('/api/user').then(response =>{
+            this.field.user_id = response.data.id;
+        });
         // get all categories 
         axios.get('/api/categories')
         .then(response => this.categories = response.data.data);
@@ -64,7 +69,7 @@ export default {
                 this.form_submitted = false;
             })
             .catch(error => {
-                if(error.response.status === 422){
+                if(error.response.status === 422 || error.response.status === 500){
                     this.$swal({icon:'error', title:'Error Happened'});
                     this.errors = error.response.data.errors;
                 }

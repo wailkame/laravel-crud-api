@@ -1,6 +1,6 @@
 <template>
     <div>
-       <form @submit.prevent="submit_form" v-if="isLogin">
+       <form @submit.prevent="submit_form">
            Post Title:
            <br >
            <input type="text" class="form-control" v-model="field.title">
@@ -19,7 +19,7 @@
             <br>            
             <input type="file" @change="select_file">
             <br><br>
-            <input type="submit" class="btn btn-primary" :value="form_submitted ? 'Saving post...': 'Save post'" :disabled="form_submitted"> 
+            <input type="submit" class="btn btn-primary" :value="form_submitted ? 'Saving post...': 'Save post'" :disabled="this.form_submitted"> 
             <br>
             
        </form>
@@ -37,19 +37,27 @@ export default {
                 title: '',
                 post_text: '',
                 category_id: '',
+                user_id:'',
                 thumbnail: null,
             },
             errors: {},
             form_submitted:false,
-            isLogin: false
+            
 
         }
     },
     created(){
+        // get all user Data
+        axios.get('/api/user').then(response => {
+            this.field.user_id = response.data.id;
+            
+        });
+
+        // get all gategories
         axios.get('/api/categories')
         .then(response => {
             this.categories = response.data.data;
-            this.isLogin = true;
+            
         })
         .catch(error => {
             if(error.response.status === 500 || error.response.status === 401){
@@ -77,13 +85,14 @@ export default {
                 this.form_submitted = false;
             })
             .catch(error => {
-                if(error.response.status === 422){
+                if(error.response.status === 422 || error.response.status === 500){
                     this.$swal({icon:'error', title:'Error Happened'});
                     this.errors = error.response.data.errors;
-                    this.form_submitted = false;
+                    
                 }
+                this.form_submitted = false;
             });
-        }
+        } 
     }
 }
 </script>
