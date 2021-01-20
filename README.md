@@ -29,7 +29,7 @@
 
 #### Development
 - you must set you local domain as crudapp.test
--if you want you use your own local domain you must change the local variable axios.defaults.baseURL = your domain in bootstrap.js
+- if you want you use your own local domain you must change the local variable axios.defaults.baseURL = your domain in bootstrap.js
 ```bash
 
 # Build and watch
