@@ -21,15 +21,17 @@
 
 - `git clone https://github.com/wailkame/laravel-crud-api.git`
 - Edit `.env` and set your database connection details
-- (When installed via git clone or download, run `php artisan key:generate` and `php artisan jwt:secret`)
+- `php artisan key:generate`
 - `php artisan migrate`
 - `npm install`
 
 ## Usage
 
 #### Development
-
+- you must set you local domain as crudapp.test
+-if you want you use your own local domain you must change the local variable axios.defaults.baseURL = your domain in bootstrap.js
 ```bash
+
 # Build and watch
 npm run watch
 
