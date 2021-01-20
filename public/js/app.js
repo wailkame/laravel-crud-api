@@ -2106,8 +2106,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         post_text: '',
         created_at: ''
       },
-      search: '',
-      isLogin: false
+      search: ''
     };
   },
   mounted: function mounted() {
@@ -2120,13 +2119,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     axios.get('/api/categories').then(function (response) {
       _this.categories = response.data.data;
-      _this.isLogin = true;
+
+      _this.getResults();
     })["catch"](function (error) {
       if (error.response.status === 500 || error.response.status === 401) {
         _this.$router.push('/');
       }
     });
-    this.getResults();
   },
   watch: {
     params: {
@@ -2144,11 +2143,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     // Our method change data sorting
     changeSort: function changeSort(field) {
-      if (this.sort_field === field) {
-        this.sort_direction = this.sort_direction === 'asc' ? 'desc' : 'asc';
+      if (this.params.sort_field === field) {
+        this.params.sort_direction = this.params.sort_direction === 'asc' ? 'desc' : 'asc';
       } else {
-        this.sort_field = field;
-        this.sort_direction = 'asc';
+        this.params.sort_field = field;
+        this.params.sort_direction = 'asc';
       }
 
       this.getResults();
@@ -10841,7 +10840,7 @@ var render = function() {
         _vm._v(" "),
         _vm._m(0),
         _vm._v(" "),
-        _vm.currentPath === "/index" || _vm.currentPath === "/posts/create"
+        _vm.currentPath != "/"
           ? _c(
               "div",
               {
@@ -10960,288 +10959,289 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.isLogin
-    ? _c(
-        "div",
-        { staticClass: "row justify-content-between pb-4" },
-        [
-          _c(
-            "select",
+  return _c(
+    "div",
+    { staticClass: "row justify-content-between pb-4" },
+    [
+      _c(
+        "select",
+        {
+          directives: [
             {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.params.category_id,
-                  expression: "params.category_id"
-                }
-              ],
-              staticClass: "form-control col-md-3 my-2",
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.params,
-                    "category_id",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
-            },
-            [
-              _c("option", { attrs: { value: "" } }, [
-                _vm._v("-- choose category --")
-              ]),
-              _vm._v(" "),
-              _vm._l(_vm.categories, function(category) {
-                return _c(
-                  "option",
-                  { key: category.id, domProps: { value: category.id } },
-                  [_vm._v(_vm._s(category.name))]
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.search,
-                expression: "search"
-              }
-            ],
-            staticClass: "form-control col-md-3",
-            attrs: { type: "text", placeholder: "Search(min 4 letter)" },
-            domProps: { value: _vm.search },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.search = $event.target.value
-              }
+              name: "model",
+              rawName: "v-model",
+              value: _vm.params.category_id,
+              expression: "params.category_id"
             }
-          }),
-          _vm._v(" "),
-          _c("table", { staticClass: "table" }, [
-            _c("thead", [
-              _c("tr", [
-                _c("th", [
-                  _c(
-                    "a",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.changeSort("title")
-                        }
-                      }
-                    },
-                    [_vm._v("Title")]
-                  ),
-                  _vm._v(" "),
-                  this.params.sort_field === "title" &&
-                  this.params.sort_direction === "asc"
-                    ? _c("span", [_vm._v("↑")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.params.sort_field === "title" &&
-                  this.params.sort_direction === "desc"
-                    ? _c("span", [_vm._v("↓")])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("th", [
-                  _c(
-                    "a",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.changeSort("post_text")
-                        }
-                      }
-                    },
-                    [_vm._v("Post Text")]
-                  ),
-                  _vm._v(" "),
-                  this.params.sort_field === "post_text" &&
-                  this.params.sort_direction === "asc"
-                    ? _c("span", [_vm._v("↑")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.params.sort_field === "post_text" &&
-                  this.params.sort_direction === "desc"
-                    ? _c("span", [_vm._v("↓")])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("th", [
-                  _c(
-                    "a",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.changeSort("created_at")
-                        }
-                      }
-                    },
-                    [_vm._v("Created At")]
-                  ),
-                  _vm._v(" "),
-                  this.params.sort_field === "created_at" &&
-                  this.params.sort_direction === "asc"
-                    ? _c("span", [_vm._v("↑")])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  this.params.sort_field === "created_at" &&
-                  this.params.sort_direction === "desc"
-                    ? _c("span", [_vm._v("↓")])
-                    : _vm._e()
-                ]),
-                _vm._v(" "),
-                _c("th", [_vm._v("Actions")])
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("th", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.params.title,
-                        expression: "params.title"
-                      }
-                    ],
-                    staticClass: "form-control w-100",
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.params.title },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.params, "title", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("th", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.params.post_text,
-                        expression: "params.post_text"
-                      }
-                    ],
-                    staticClass: "form-control w-100",
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.params.post_text },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.params, "post_text", $event.target.value)
-                      }
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("th", [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.params.created_at,
-                        expression: "params.created_at"
-                      }
-                    ],
-                    staticClass: "form-control w-100",
-                    attrs: { type: "text" },
-                    domProps: { value: _vm.params.created_at },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(_vm.params, "created_at", $event.target.value)
-                      }
-                    }
-                  })
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c(
-              "tbody",
-              _vm._l(_vm.posts.data, function(post) {
-                return _c("tr", { key: post.id }, [
-                  _c("td", [_vm._v(_vm._s(post.title))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(post.post_text))]),
-                  _vm._v(" "),
-                  _c("td", [_vm._v(_vm._s(post.created_at))]),
-                  _vm._v(" "),
-                  _c(
-                    "td",
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "btn btn-info btn-sm",
-                          attrs: {
-                            to: { name: "posts.edit", params: { id: post.id } }
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger btn-sm",
-                          on: {
-                            click: function($event) {
-                              return _vm.delete_post(post.id)
-                            }
-                          }
-                        },
-                        [_vm._v("Delete")]
-                      )
-                    ],
-                    1
-                  )
-                ])
-              }),
-              0
-            )
+          ],
+          staticClass: "form-control col-md-3 my-2",
+          on: {
+            change: function($event) {
+              var $$selectedVal = Array.prototype.filter
+                .call($event.target.options, function(o) {
+                  return o.selected
+                })
+                .map(function(o) {
+                  var val = "_value" in o ? o._value : o.value
+                  return val
+                })
+              _vm.$set(
+                _vm.params,
+                "category_id",
+                $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+              )
+            }
+          }
+        },
+        [
+          _c("option", { attrs: { value: "" } }, [
+            _vm._v("-- choose category --")
           ]),
           _vm._v(" "),
-          _c("pagination", {
-            attrs: { data: _vm.posts },
-            on: { "pagination-change-page": _vm.getResults }
+          _vm._l(_vm.categories, function(category) {
+            return _c(
+              "option",
+              { key: category.id, domProps: { value: category.id } },
+              [_vm._v(_vm._s(category.name))]
+            )
           })
         ],
-        1
-      )
-    : _vm._e()
+        2
+      ),
+      _vm._v(" "),
+      _c("input", {
+        directives: [
+          {
+            name: "model",
+            rawName: "v-model",
+            value: _vm.search,
+            expression: "search"
+          }
+        ],
+        staticClass: "form-control col-md-3",
+        attrs: { type: "text", placeholder: "Search(min 4 letter)" },
+        domProps: { value: _vm.search },
+        on: {
+          input: function($event) {
+            if ($event.target.composing) {
+              return
+            }
+            _vm.search = $event.target.value
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("table", { staticClass: "table" }, [
+        _c("thead", [
+          _c("tr", [
+            _c("th", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.changeSort("title")
+                    }
+                  }
+                },
+                [_vm._v("Title")]
+              ),
+              _vm._v(" "),
+              this.params.sort_field === "title" &&
+              this.params.sort_direction === "asc"
+                ? _c("span", [_vm._v("↑")])
+                : _vm._e(),
+              _vm._v(" "),
+              this.params.sort_field === "title" &&
+              this.params.sort_direction === "desc"
+                ? _c("span", [_vm._v("↓")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.changeSort("post_text")
+                    }
+                  }
+                },
+                [_vm._v("Post Text")]
+              ),
+              _vm._v(" "),
+              this.params.sort_field === "post_text" &&
+              this.params.sort_direction === "asc"
+                ? _c("span", [_vm._v("↑")])
+                : _vm._e(),
+              _vm._v(" "),
+              this.params.sort_field === "post_text" &&
+              this.params.sort_direction === "desc"
+                ? _c("span", [_vm._v("↓")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c(
+                "a",
+                {
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.changeSort("created_at")
+                    }
+                  }
+                },
+                [_vm._v("Created At")]
+              ),
+              _vm._v(" "),
+              this.params.sort_field === "created_at" &&
+              this.params.sort_direction === "asc"
+                ? _c("span", [_vm._v("↑")])
+                : _vm._e(),
+              _vm._v(" "),
+              this.params.sort_field === "created_at" &&
+              this.params.sort_direction === "desc"
+                ? _c("span", [_vm._v("↓")])
+                : _vm._e()
+            ]),
+            _vm._v(" "),
+            _c("th", [_vm._v("Actions")])
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("th", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.params.title,
+                    expression: "params.title"
+                  }
+                ],
+                staticClass: "form-control w-100",
+                attrs: { type: "text" },
+                domProps: { value: _vm.params.title },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.params, "title", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.params.post_text,
+                    expression: "params.post_text"
+                  }
+                ],
+                staticClass: "form-control w-100",
+                attrs: { type: "text" },
+                domProps: { value: _vm.params.post_text },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.params, "post_text", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("th", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.params.created_at,
+                    expression: "params.created_at"
+                  }
+                ],
+                staticClass: "form-control w-100",
+                attrs: { type: "text" },
+                domProps: { value: _vm.params.created_at },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.params, "created_at", $event.target.value)
+                  }
+                }
+              })
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c(
+          "tbody",
+          _vm._l(_vm.posts.data, function(post) {
+            return _c("tr", { key: post.id }, [
+              _c("td", [_vm._v(_vm._s(post.title))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(post.post_text))]),
+              _vm._v(" "),
+              _c("td", [_vm._v(_vm._s(post.created_at))]),
+              _vm._v(" "),
+              _c(
+                "td",
+                [
+                  _c(
+                    "router-link",
+                    {
+                      staticClass: "btn btn-info btn-sm",
+                      attrs: {
+                        to: { name: "posts.edit", params: { id: post.id } }
+                      }
+                    },
+                    [_vm._v("Edit")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger btn-sm",
+                      on: {
+                        click: function($event) {
+                          return _vm.delete_post(post.id)
+                        }
+                      }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                ],
+                1
+              )
+            ])
+          }),
+          0
+        )
+      ]),
+      _vm._v(" "),
+      _c("pagination", {
+        attrs: { data: _vm.posts },
+        on: { "pagination-change-page": _vm.getResults }
+      })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true

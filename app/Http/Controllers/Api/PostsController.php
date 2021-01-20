@@ -35,8 +35,8 @@ class PostsController extends Controller
         })->when(request('search', '') != '', function($query){
             $query->where(function($q){
                 $q->where('title', 'LIKE', '%' . request('search') . '%')
-                ->orWhere('post_text', '%' . request('search') . '%')
-                ->orWhere('created_at', '%' . request('search') . '%');
+                ->orWhere('post_text','LIKE', '%' . request('search') . '%')
+                ->orWhere('created_at','LIKE', '%' . request('search') . '%');
             });
         })->when(request('category_id', '') != '', function($query){
             $query->where('category_id', request('category_id'));

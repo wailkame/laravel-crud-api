@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-content-between pb-4" v-if="isLogin">
+    <div class="row justify-content-between pb-4">
         <select v-model="params.category_id"  class="form-control col-md-3 my-2">
             <option value="" >-- choose category --</option>
             <option  v-for="category in categories" :key="category.id" :value="category.id">{{category.name}}</option>
@@ -9,17 +9,17 @@
             <thead>
                 <tr>
                     <th>
-                        <a  @click.prevent="changeSort('title')">Title</a>
+                        <a href="#" @click.prevent="changeSort('title')">Title</a>
                         <span v-if="this.params.sort_field === 'title' && this.params.sort_direction === 'asc'">&uarr;</span>
                         <span v-if="this.params.sort_field === 'title' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
                     <th>
-                        <a  @click.prevent="changeSort('post_text')">Post Text</a>
+                        <a href="#" @click.prevent="changeSort('post_text')">Post Text</a>
                         <span v-if="this.params.sort_field === 'post_text' && this.params.sort_direction === 'asc'">&uarr;</span>
                         <span v-if="this.params.sort_field === 'post_text' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
                     <th>
-                        <a  @click.prevent="changeSort('created_at')">Created At</a>
+                        <a href="#" @click.prevent="changeSort('created_at')">Created At</a>
                         <span v-if="this.params.sort_field === 'created_at' && this.params.sort_direction === 'asc'">&uarr;</span>
                         <span v-if="this.params.sort_field === 'created_at' && this.params.sort_direction === 'desc'">&darr;</span>
                     </th>
@@ -67,12 +67,11 @@ export default {
                 category_id: '',
                 sort_field: 'created_at',
                 sort_direction: 'desc',
-                title: '',
-                post_text: '',
-                created_at: ''
+                title:'',
+                post_text:'',
+                created_at:'',
             },
             search: '',
-            isLogin: false
         } 
     },
     mounted(){
@@ -85,14 +84,15 @@ export default {
         axios.get('/api/categories')
         .then(response => {
             this.categories = response.data.data;
-            this.isLogin = true;
+            this.getResults();
+            
         })
         .catch(error => {
             if(error.response.status === 500 || error.response.status === 401){
                 this.$router.push('/');
             }
         });
-        this.getResults();
+        
         
     },
     watch:{
@@ -112,11 +112,11 @@ export default {
         
         // Our method change data sorting
         changeSort(field){
-            if(this.sort_field === field){
-                this.sort_direction = this.sort_direction === 'asc' ? 'desc': 'asc';
+            if(this.params.sort_field === field){
+                this.params.sort_direction = this.params.sort_direction === 'asc' ? 'desc': 'asc';
             }else{
-                this.sort_field = field;
-                this.sort_direction = 'asc';
+                this.params.sort_field = field;
+                this.params.sort_direction = 'asc';
             }
             this.getResults();
         },
